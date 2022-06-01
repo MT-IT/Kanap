@@ -9,17 +9,21 @@ let itemCommand = JSON.parse(localStorage.getItem("commande"));
 let cartItem = document.querySelector("#cart__items");
 
 //On utilise cette fonction pour insérer nos éléments HTML et pouvoir y ajouter nos produits selectionnés dans le localstorage.
-function loadItems() {
+async function loadItems() {
     for (let item of itemCommand) {
+        const response = await fetch(`http://localhost:3000/api/products/${item.id}`)
+
+         const {price,altTxt,imageUrl,name} = await response.json();
+
         cartItem.innerHTML += `<article class="cart__item" data-id="${item.id}" data-color="${item.color}">
         <div class="cart__item__img">
-          <img src="${item.imageUrl}" alt="${item.altTxt}">
+          <img src="${imageUrl}" alt="${altTxt}">
         </div>
         <div class="cart__item__content">
           <div class="cart__item__content__description">
-            <h2>${item.name}</h2>
+            <h2>${name}</h2>
             <p>${item.color}</p>
-            <p>${item.price}€</p>
+            <p>${price}€</p>
           </div>
           <div class="cart__item__content__settings">
             <div class="cart__item__content__settings__quantity">
@@ -97,12 +101,21 @@ function totalItems () {
         
     }
     document.getElementById("totalQuantity").innerText = totalQuantity;
+    const descriptions = document.querySelectorAll(".cart__item__content__description");
+    for (let i = 0; i < descriptions.length ; i++)
+    {
+        const priceElement = descriptions[i].lastElementChild.innerHTML.slice(0,-1);
+        totalPrice += parseInt(quantites[i].value) * parseInt(priceElement);
 
-    for (let i = 0; i < quantites.length ; i++) {
+        
+    }
+
+    /*for (let i = 0; i < quantites.length ; i++) {
         totalPrice += itemCommand[i].price * quantites[i].value;
         //console.log(quantites[i].value);
         //console.log(itemCommand[i].price);
-    }
+    }*/
+
         //console.log("total prix = " + totalPrice + "€"); 
         //console.log("total quantités = " + totalQuantity + "articles");
 

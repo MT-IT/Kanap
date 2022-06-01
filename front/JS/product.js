@@ -56,12 +56,9 @@ retourne donc une alert sinon on enregistre donc son article dans le localStorag
         //Variables stockant toutes les données d'un produit.
         let command = {
             "id": productId,
-			"name": products.name,
 			"color": itemColor,
 			"quantity": itemQuantity,
-			"imageUrl": products.imageUrl,
-			"altTxt": products.altTxt,
-            "price": products.price,
+			
 			
         }
         //console.log(command);
